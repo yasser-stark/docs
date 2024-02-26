@@ -1,41 +1,37 @@
-name: Deploy Docs to Github Pages
+```dart
+import 'package:flutter/material.dart';
 
-on:
-  push:
-    branches:
-      - main
+void main() => runApp(MyApp());
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 13
-      - run: yarn install --frozen-lockfile
-        working-directory: website
-      - name: Add key to allow access to repository
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          echo "${{ secrets.GH_PAGES_DEPLOY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          cat <<EOT >> ~/.ssh/config
-          Host github.com
-          HostName github.com
-          IdentityFile ~/.ssh/id_rsa
-          EOT
-      - run: |
-          git config --global user.email "actions@gihub.com"
-          git config --global user.name "gh-actions"
-      - run: yarn run deploy
-        working-directory: website
-        env:
-          GIT_USER: git
-          USE_SSH: true
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Text App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: TextScreen(),
+    );
+  }
+}
 
+class TextScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Text Screen'),
+      ),
+      body: Center(
+        child: Text(
+          'Hello, World!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
+```
 
+.
